@@ -1,1 +1,1 @@
-# nuxtjs-crud
+# cobain crud nuxtjs ts
