@@ -1,17 +1,18 @@
+<script setup lang="ts">
+import AppHeader from "~/components/AppHeader.vue";
+</script>
+
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <v-toolbar-title>My App</v-toolbar-title>
-    </v-app-bar>
+    <AppHeader />
     <v-main>
       <v-container>
         <router-view />
         <slot />
       </v-container>
     </v-main>
-    <slot />
-    <v-footer app color="primary" dark>
+    <AppFooter>
       <span>&copy; 2023 My App</span>
-    </v-footer>
+    </AppFooter>
   </v-app>
 </template>

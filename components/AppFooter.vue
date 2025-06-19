@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <v-footer app color="primary" dark>
     <slot />
-  </span>
+  </v-footer>
 </template>
