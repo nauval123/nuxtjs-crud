@@ -7,7 +7,7 @@ import AppHeader from "~/components/AppHeader.vue";
     <AppHeader />
     <v-main>
       <v-container>
-        <router-view />
+        <!-- <router-view /> -->
         <slot />
       </v-container>
     </v-main>
