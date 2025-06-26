@@ -1,25 +1,33 @@
 <template>
-    <v-sheet class="d-flex justify-space-between align-center elevation-3 px-2" height="100">
-      <v-checkbox :label="titled"  :model-value="true"></v-checkbox>
-      <div>
-        <v-icon icon="mdi:mdi-timer-sand"></v-icon>
-        <span>{{props.date}}</span>
-      </div>
-      <div>
-        <v-btn icon="mdi:mdi-grease-pencil" color="error" variant="plain"></v-btn>
-        <v-icon icon="mdi-checkbox-blank-circle"></v-icon>
-      </div>
-    </v-sheet>
+  <v-card class="elevation-3 pa-3 ma-2">
+    <v-checkbox :model="props.checkbox"></v-checkbox>
+    <template v-slot:title>
+      {{ props.titled }}
+      <v-btn
+        icon="mdi:mdi-grease-pencil"
+        color="error"
+        variant="plain"
+        @click="customFunc"
+      >
+      </v-btn>
+    </template>
+    <template v-slot:subtitle>
+      {{ props.date }}
+    </template>
+    <template v-slot:text>
+      {{ props.content }}
+    </template>
+  </v-card>
 </template>
 
 <script setup lang="ts">
-    import { type CustomCardModel} from './CustomCard.model'
-    const props = withDefaults(defineProps<CustomCardModel>(), {
-        titled: 'info',
-        date:"Senin 5 Oktober 2025",
-        checkbox:true,
-        priority:"low"
-    });
-
-    const checkbox1 = ref(true)
+import { type CustomCardModel } from "./CustomCard.model";
+const props = withDefaults(defineProps<CustomCardModel>(), {
+  titled: "info",
+  date: "Senin 5 Oktober 2025",
+  content: "content",
+  checkbox: true,
+  priority: "low",
+  // customFunc: () => "",
+});
 </script>

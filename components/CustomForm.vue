@@ -1,42 +1,56 @@
 <template>
-  <v-sheet class="mx-auto" width="300">
-    <v-form fast-fail @submit.prevent>
-      <v-text-field
-        v-model="firstName"
-        :rules="firstNameRules"
-        label="First name"
-      ></v-text-field>
+  <v-form fast-fail @submit.prevent>
+    <v-text-field
+      v-model="title"
+      :rules="titleRules"
+      label="title"
+    ></v-text-field>
 
-      <!-- v-model untuk data binding dua arah -->
-      <v-text-field
-        v-model="lastName" 
-        :rules="lastNameRules"
-        label="Last name"
-      ></v-text-field>
+    <!-- v-model untuk data binding dua arah -->
+    <v-text-field
+      v-model="content"
+      :rules="contentRules"
+      label="Last name"
+    ></v-text-field>
 
-      <v-btn class="mt-2" type="submit" block>Submit</v-btn>
-    </v-form>
-  </v-sheet>
+    <v-date-picker v-model="date" :rules="dateRules"></v-date-picker>
+
+    <v-btn class="mt-2 me-4" type="submit" block>Submit</v-btn>
+  </v-form>
 </template>
 
-<script setup>
-  import { ref } from 'vue'
+<script setup lang="ts">
+import { ref } from "vue";
+// const props = withDefaults(defineProps<FormModel>(), {
+//   titled: "judul default";
+//   date: "string";
+//   checkbox: true;
+//   priority: "string";
+//   content?: "string";
+// });
 
-  const firstName = ref('')
-  const lastName = ref('123')
+const title = ref("");
+const content = ref("");
+const date = ref("");
 
+const titleRules = [
+  (value) => {
+    if (value?.length >= 3) return true;
+    return "title must be at least 3 characters.";
+  },
+];
 
-  const firstNameRules = [
-    value => {
-      if (value?.length >= 3) return true
-      return 'First name must be at least 3 characters.'
-    },
-  ]
+const dateRules = [
+  (value) => {
+    if (value?.length > 0) return true;
+    return "title must bea at least 1 character.";
+  },
+];
 
-  const lastNameRules = [
-    value => {
-      if (/[^0-9]/.test(value)) return true
-      return 'Last name can not contain digits.'
-    },
-  ]
+const contentRules = [
+  (value) => {
+    if (value?.length > 1) return true;
+    return "content must be at least 1 character.";
+  },
+];
 </script>
