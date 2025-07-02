@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <v-app-bar :elevation="2">
     <template #image>
       <v-img
@@ -8,7 +8,45 @@
       ></v-img>
     </template>
     <v-app-bar-title class="text-center text-white text-h4"
-      >Todo App</v-app-bar-title
+      >Catatan Keuangan</v-app-bar-title
     >
   </v-app-bar>
+</template> -->
+<template>
+  <ClientOnly>
+    <v-navigation-drawer expand-on-hover rail>
+      <v-list>
+        <v-list-item
+          prepend-avatar="https://i.imgflip.com/3c6ff9.png"
+          subtitle="admin"
+          title="Nauval Achmad Yusufa"
+        ></v-list-item>
+      </v-list>
+
+      <v-divider></v-divider>
+
+      <v-list density="compact" nav>
+        <v-list-item
+          prepend-icon="mdi-chart-bar"
+          title="Dashboard"
+          value="dashboard"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-cash-plus"
+          title="Data Uang Masuk"
+          value="cash-in"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-cash-refund"
+          title="Data Uang Keluar"
+          value="cash-out"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-logout"
+          title="Logout"
+          value="logout"
+        ></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+  </ClientOnly>
 </template>

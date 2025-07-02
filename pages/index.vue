@@ -1,39 +1,31 @@
 <template>
   <v-sheet border rounded>
     <v-container>
-      <v-row class="d-flex justify-center ga-1 my-2">
-        <!-- bagian komponen tombol -->
-        <v-btn size="large" color="success" density="default">today</v-btn>
-        <v-btn size="large" density="default">pending</v-btn>
-        <v-btn size="large" density="default">overdue</v-btn>
-      </v-row>
-    </v-container>
-    <v-container>
       <v-data-table
         :headers="headers"
-        :hide-default-footer="data.length < 11"
-        :items="data"
+        :hide-default-footer="cashInData.length < 11"
+        :items="cashInData"
       >
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>
               <v-icon
                 color="medium-emphasis"
-                icon="mdi-format-list-checks"
+                icon="mdi-cash-plus"
                 size="x-small"
                 start
               ></v-icon>
 
-              To Do List
+              Data Uang Masuk
             </v-toolbar-title>
 
             <v-btn
               class="me-2"
               prepend-icon="mdi-plus"
               rounded="lg"
-              text="Add new task"
+              text="Tambahkan Data Uang Masuk"
               border
-              @click="dialog_state = !dialog_state"
+              @click="createOnClick()"
             ></v-btn>
           </v-toolbar>
         </template>
@@ -44,14 +36,14 @@
               color="medium-emphasis"
               icon="mdi-pencil"
               size="small"
-              @click="edit(item.id)"
+              @click="editOnclick(item)"
             ></v-icon>
 
             <v-icon
               color="medium-emphasis"
               icon="mdi-delete"
               size="small"
-              @click="remove(item.id)"
+              @click="deleteOnClick(item)"
             ></v-icon>
           </div>
         </template>
@@ -59,117 +51,108 @@
     </v-container>
   </v-sheet>
 
-  <!-- <v-container class="mt-2"> -->
-  <!-- header komponen -->
-  <!-- <v-row size="medium">
-      <v-row class="d-flex justify-space-between mb-2">
-        <h1>Task</h1>
-        <v-btn
-          title="add task"
-          variant="tonal"
-          prepend-icon="mdi:mdi-note-plus-outline"
-          @click="dialog_state = !dialog_state"
-          >add task</v-btn
-        ></v-row
-      > -->
-
-  <!-- <v-row>
-        <div class="d-flex flex-wrap" v-for="item in items" :key="item.id">
-          <CustomCard
-            :titled="item.title"
-            :date="item.date"
-            :checkbox="item.checkbox"
-            :priority="item.priority"
-            :customFunc="modalFunc"
-          /></div
-      ></v-row>
-    </v-row>
-  </v-container> -->
-
   <!-- dialog/modal show up -->
   <v-dialog v-model="dialog_state" width="auto">
-    <v-card class="pa-5" width="80vw" title="Task">
-      <template v-slot:title class="text-center d-flex justify-space-between">
-      </template>
-      <CustomForm />
-    </v-card>
+    <CustomForm
+      :initial-data="itemmData"
+      @submit="handleFormSubmit"
+      @cancel="changeDialogStatus()"
+    />
+  </v-dialog>
+
+  <v-dialog v-model="loading_state" width="auto" persistent>
+    <CustomLoading />
   </v-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import type { VDataTableServer } from "vuetify/components";
+import CustomLoading from "../components/CustomLoading/CustomLoading.vue";
+import type CashInItem from "~/components/cashModel";
 
-const drawer = ref(true);
-const dialog_state = ref(false);
-const headers = [
+const headers: VDataTableServer["$props"]["headers"] = [
   { title: "Title", key: "title", align: "start" },
   { title: "Date", key: "date" },
-  { title: "Priority", key: "priority", align: "end" },
+  { title: "Detail", key: "detail", align: "end" },
+  { title: "Amount", key: "amount", align: "end" },
+  { title: "Currencey", key: "currency", align: "end" },
   { title: "Actions", key: "actions", align: "end", sortable: false },
 ];
-const data = ref([
-  {
-    id: 1,
-    title: "Dashboard",
-    date: "Senin 5 Oktober 2025",
-    checkbox: true,
-    priority: "low",
+
+const {
+  list: cashInData,
+  pending: statusPending,
+  error: statusError,
+  addItem,
+  updateItem,
+  deleteItem,
+} = useCrud<CashInItem>("cash-in");
+
+const dialog_state = ref(false);
+const loading_state = ref(false);
+
+watch(
+  () => statusPending.value,
+  (newstatus) => {
+    loading_state.value = newstatus;
   },
-  {
-    id: 2,
-    title: "Team",
-    date: "Selasa 6 Oktober 2025",
-    checkbox: false,
-    priority: "medium",
-  },
-  {
-    id: 3,
-    title: "Projects",
-    date: "Selasa 7 Oktober 2025",
-    checkbox: true,
-    priority: "low",
-  },
-  {
-    id: 4,
-    title: "Calendar",
-    date: "Selasa 8 Oktober 2025",
-    checkbox: false,
-    priority: "medium",
-  },
-  {
-    id: 5,
-    title: "Reports",
-    date: "Selasa 9 Oktober 2025",
-    checkbox: true,
-    priority: "low",
-  },
-  {
-    id: 6,
-    title: "Reports",
-    date: "Selasa 9 Oktober 2025",
-    checkbox: true,
-    priority: "low",
-  },
-  {
-    id: 7,
-    title: "Reports",
-    date: "Selasa 9 Oktober 2025",
-    checkbox: true,
-    priority: "low",
-  },
-  {
-    id: 8,
-    title: "Reports",
-    date: "Selasa 9 Oktober 2025",
-    checkbox: true,
-    priority: "low",
-  },
-  {
-    id: 9,
-    title: "Reports",
-    date: "Selasa 9 Oktober 2025",
-    checkbox: true,
-    priority: "low",
-  },
-]);
+  { immediate: true }
+);
+
+const itemmData = ref<CashInItem>({
+  id: "",
+  title: "",
+  detail: "",
+  amount: 0,
+  currency: "idr",
+  createdAt: "",
+});
+
+function createOnClick() {
+  dialog_state.value = true;
+  itemmData.value = {
+    id: "",
+    title: "",
+    detail: "",
+    amount: 0,
+    createdAt: "",
+    currency: "idr",
+  };
+}
+
+function editOnclick(itemnya: any) {
+  console.log("item yang akan diupdate:" + itemnya);
+  dialog_state.value = true;
+  itemmData.value = itemnya;
+}
+
+async function deleteOnClick(itemnya: any) {
+  console.log("item yang akan didelete:" + JSON.stringify(itemnya));
+  // await deleteItem(itemnya.value.id);
+}
+
+const jeda = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const handleFormSubmit = async (payload: CashInItem) => {
+  loading_state.value = true;
+
+  if (itemmData.value && itemmData.value.id) {
+    await updateItem(itemmData.value.id, payload);
+    // jeda(3000);
+    console.log("ini edit data:");
+    console.log(payload);
+  } else {
+    console.log("ini create data:");
+    console.log(payload);
+    await addItem(payload);
+    // jeda(3000);
+  }
+  loading_state.value = false;
+  changeDialogStatus();
+};
+
+function changeDialogStatus() {
+  dialog_state.value = !dialog_state;
+}
 </script>

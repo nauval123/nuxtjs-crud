@@ -3,12 +3,7 @@
     <v-checkbox :model="props.checkbox"></v-checkbox>
     <template v-slot:title>
       {{ props.titled }}
-      <v-btn
-        icon="mdi:mdi-grease-pencil"
-        color="error"
-        variant="plain"
-        @click="customFunc"
-      >
+      <v-btn icon="mdi:mdi-grease-pencil" color="error" variant="plain">
       </v-btn>
     </template>
     <template v-slot:subtitle>
