@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
 
   const urlFinal = `${baseURL}/${endpoint}`;
 
-  // mengatur headers
   const headers = {
     "Content-Type": "application/json",
   };

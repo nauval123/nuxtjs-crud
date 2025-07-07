@@ -73,7 +73,7 @@ import type CashInItem from "~/components/cashModel";
 
 const headers: VDataTableServer["$props"]["headers"] = [
   { title: "Title", key: "title", align: "start" },
-  { title: "Date", key: "date" },
+  { title: "Date", key: "createdAt" },
   { title: "Detail", key: "detail", align: "end" },
   { title: "Amount", key: "amount", align: "end" },
   { title: "Currencey", key: "currency", align: "end" },
@@ -127,26 +127,22 @@ function editOnclick(itemnya: any) {
   itemmData.value = itemnya;
 }
 
-async function deleteOnClick(itemnya: any) {
+async function deleteOnClick(itemnya: CashInItem) {
   console.log("item yang akan didelete:" + JSON.stringify(itemnya));
-  // await deleteItem(itemnya.value.id);
+  await deleteItem(itemnya.id);
 }
-
-const jeda = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const handleFormSubmit = async (payload: CashInItem) => {
   loading_state.value = true;
 
   if (itemmData.value && itemmData.value.id) {
     await updateItem(itemmData.value.id, payload);
-    // jeda(3000);
     console.log("ini edit data:");
     console.log(payload);
   } else {
     console.log("ini create data:");
     console.log(payload);
     await addItem(payload);
-    // jeda(3000);
   }
   loading_state.value = false;
   changeDialogStatus();

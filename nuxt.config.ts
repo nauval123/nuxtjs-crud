@@ -12,6 +12,8 @@ export default defineNuxtConfig({
     transpile: ["vuetify"],
   },
   modules: [
+    "@prisma/nuxt",
+    "@sidebase/nuxt-auth",
     (_options, nuxt) => {
       nuxt.hooks.hook("vite:extendConfig", (config) => {
         // @ts-expect-error
@@ -24,6 +26,26 @@ export default defineNuxtConfig({
     vue: {
       template: {
         transformAssetUrls,
+      },
+    },
+  },
+  auth: {
+    baseURL: process.env.AUTH_ORIGIN, // URL aplikasi Anda
+    provider: {
+      type: "authjs",
+    },
+    globalAppMiddleware: {
+      isEnabled: true,
+    },
+  },
+  runtimeConfig: {
+    // Ini sama dengan JWT_SECRET
+    authJs: {
+      secret: process.env.NUXT_AUTH_SECRET,
+    },
+    public: {
+      authJs: {
+        baseUrl: process.env.NUXT_PUBLIC_AUTH_JS_BASE_URL,
       },
     },
   },
