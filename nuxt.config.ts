@@ -30,7 +30,7 @@ export default defineNuxtConfig({
     },
   },
   auth: {
-    baseURL: process.env.AUTH_ORIGIN, // URL aplikasi Anda
+    baseURL: process.env.AUTH_ORIGIN,
     provider: {
       type: "authjs",
     },
@@ -39,7 +39,6 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    // Ini sama dengan JWT_SECRET
     authJs: {
       secret: process.env.NUXT_AUTH_SECRET,
     },

@@ -43,7 +43,7 @@
               color="medium-emphasis"
               icon="mdi-delete"
               size="small"
-              @click="deleteOnClick(item)"
+              @click="deleteOnClick(item.id)"
             ></v-icon>
           </div>
         </template>
@@ -62,6 +62,16 @@
 
   <v-dialog v-model="loading_state" width="auto" persistent>
     <CustomLoading />
+  </v-dialog>
+
+  <v-dialog v-model="confimartion_state" width="auto" persistent>
+    <ConfirmationDialog
+      title="Konfirmasi Penghapusan"
+      detail="apakah kamu yakin ingin menghapus data ini?"
+      :idItem="idToBeDeleted"
+      @submit="deleteData"
+      @cancel="changeConfirmationDialogStatus()"
+    />
   </v-dialog>
 </template>
 
@@ -87,10 +97,13 @@ const {
   addItem,
   updateItem,
   deleteItem,
-} = useCrud<CashInItem>("cash-in");
+} = useCrud<CashInItem>("cash");
 
 const dialog_state = ref(false);
 const loading_state = ref(false);
+const confimartion_state = ref(false);
+const error_state = ref(false);
+const idToBeDeleted = ref("");
 
 watch(
   () => statusPending.value,
@@ -127,9 +140,22 @@ function editOnclick(itemnya: any) {
   itemmData.value = itemnya;
 }
 
-async function deleteOnClick(itemnya: CashInItem) {
-  console.log("item yang akan didelete:" + JSON.stringify(itemnya));
-  await deleteItem(itemnya.id);
+// async function deleteData(itemnya: CashInItem) {
+//   console.log("item yang akan didelete:" + JSON.stringify(itemnya));
+//   await deleteItem(itemnya.id);
+//   confimartion_state.value = false;
+// }
+
+async function deleteData(idItem: { idData: string }) {
+  console.log("item yang akan deleteData:" + idItem.idData);
+  await deleteItem(idItem.idData);
+  confimartion_state.value = false;
+}
+
+function deleteOnClick(idItem: string) {
+  console.log("item yang akan dideleteOnclick:" + idItem);
+  idToBeDeleted.value = idItem;
+  confimartion_state.value = true;
 }
 
 const handleFormSubmit = async (payload: CashInItem) => {
@@ -150,5 +176,11 @@ const handleFormSubmit = async (payload: CashInItem) => {
 
 function changeDialogStatus() {
   dialog_state.value = !dialog_state;
+}
+
+function changeConfirmationDialogStatus() {
+  console.log("hapus dong");
+  confimartion_state.value = !confimartion_state;
+  idToBeDeleted.value = "";
 }
 </script>

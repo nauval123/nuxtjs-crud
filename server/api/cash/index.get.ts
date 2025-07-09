@@ -3,17 +3,18 @@ import { getServerSession } from "#auth";
 import { CashdataFormat } from "~/types/cashDataFormat";
 
 export default defineEventHandler(async (event) => {
-  const { userIdData } = event.context.user;
-
   const session = await getServerSession(event);
-  if (!session) {
+  console.log("ini data season");
+  console.log(session);
+  if (!session || !session.user) {
     throw createError({ statusCode: 401, statusMessage: "Unauthenticated" });
   }
+  const userId = (session.user as any).id;
+
   try {
     const cashes = await prisma.cash.findMany({
       where: {
-        // userId: 1,
-        userId: userIdData,
+        userId: userId,
       },
       include: {
         type: true,
@@ -35,9 +36,13 @@ export default defineEventHandler(async (event) => {
       };
     });
 
-    return {
-      status: "success",
-      data: formatData,
-    };
-  } catch (error) {}
+    return formatData;
+  } catch (error) {
+    console.error("error API:", error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Server Error",
+      message: "Gagal mengambil data.",
+    });
+  }
 });
