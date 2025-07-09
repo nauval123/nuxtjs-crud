@@ -19,7 +19,7 @@
         <v-list-item
           prepend-avatar="https://i.imgflip.com/3c6ff9.png"
           subtitle="admin"
-          title="Nauval Achmad Yusufa"
+          title="profil"
         ></v-list-item>
       </v-list>
 

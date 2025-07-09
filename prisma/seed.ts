@@ -10,6 +10,8 @@ async function main() {
   console.log("seeding...");
 
   const password = "jangandicuri123";
+  const passwordua = "123123";
+  const hashedPassworddua = await bcrypt.hash(passwordua, 10);
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const cashinType = await prisma.typecash.upsert({
@@ -37,6 +39,16 @@ async function main() {
       email: "cupacup@gmail",
       username: "Admin Utama",
       password: hashedPassword,
+    },
+  });
+
+  const user2Seed = await prisma.users.upsert({
+    where: { email: "cup@gmail" },
+    update: {},
+    create: {
+      email: "cup@gmail",
+      username: "test 2",
+      password: hashedPassworddua,
     },
   });
 
