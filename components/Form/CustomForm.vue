@@ -1,8 +1,15 @@
 <template>
-  <v-card title="Form Data">
-    <v-form ref="formComponent" fast-fail @submit.prevent="handleSubmit">
+  <v-form ref="formComponent" fast-fail @submit.prevent="handleSubmit">
+    <v-card
+      title="Form Data"
+      class="mx-auto"
+      width="350"
+      max-width="400"
+      min-width="250"
+    >
       <v-card-text>
         <v-text-field
+          variant="outlined"
           v-model="formData.title"
           :rules="titleRules"
           label="Title"
@@ -12,6 +19,7 @@
       <!-- v-model untuk data binding dua arah -->
       <v-card-text>
         <v-text-field
+          variant="outlined"
           v-model="formData.detail"
           :rules="detailRules"
           label="Detail"
@@ -20,6 +28,7 @@
 
       <v-card-text>
         <v-number-input
+          variant="outlined"
           v-model="formData.amount"
           :reverse="false"
           controlVariant="stacked"
@@ -29,17 +38,36 @@
           :inset="false"
         ></v-number-input>
       </v-card-text>
-
-      <v-date-picker
-        v-model="formData.createdAt"
-        :rules="dateRules"
-      ></v-date-picker>
-      <v-btn class="mt-2 me-4" type="submit" block>Submit</v-btn>
-      <v-btn class="mt-2 me-4" type="button" block @click="handleCancel"
-        >cancel</v-btn
-      >
-    </v-form>
-  </v-card>
+      <v-card-text>
+        <v-date-input
+          v-model="formData.createdAt"
+          :rules="dateRules"
+          label="Date Input"
+          prepend-icon=""
+          variant="outlined"
+          persistent-placeholder
+        ></v-date-input>
+      </v-card-text>
+      <v-card-actions>
+        <v-row>
+          <v-col cols="6"
+            ><v-btn
+              class="mt-2 me-4 bg-primary"
+              color="white"
+              type="submit"
+              block
+              >Submit</v-btn
+            ></v-col
+          >
+          <v-col cols="6">
+            <v-btn class="mt-2 me-4" type="button" block @click="handleCancel"
+              >cancel</v-btn
+            ></v-col
+          >
+        </v-row>
+      </v-card-actions>
+    </v-card>
+  </v-form>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,4 @@
 <template>
-  <!-- <v-app> -->
   <AppHeader />
   <v-main>
     <v-container>
@@ -9,5 +8,4 @@
   <AppFooter>
     <span>&copy; 2023 My App</span>
   </AppFooter>
-  <!-- </v-app> -->
 </template>

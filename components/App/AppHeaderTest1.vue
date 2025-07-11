@@ -1,12 +1,8 @@
 <template>
   <v-app-bar>
-    <v-app-bar-nav-icon
-      v-if="!mdAndUp"
-      @click="drawer = !drawer"
-      icon="mdi mdi-menu"
-    >
+    <v-app-bar-nav-icon v-if="!mdAndUp" @click="drawer = !drawer">
     </v-app-bar-nav-icon>
-    <v-toolbar-title>Welcome, cup !</v-toolbar-title>
+    <v-toolbar-title>Aplikasi Saya</v-toolbar-title>
   </v-app-bar>
 
   <ClientOnly>
@@ -56,7 +52,9 @@ import { useDisplay } from "vuetify"; // <-- Import useDisplay
 
 const { signOut } = useAuth();
 
+// 3. Gunakan useDisplay untuk mendeteksi layar
 const { mdAndUp } = useDisplay();
 
+// Drawer akan terbuka di layar besar dan tertutup di layar kecil secara default
 const drawer = ref(mdAndUp.value);
 </script>

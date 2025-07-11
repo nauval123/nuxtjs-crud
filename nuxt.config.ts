@@ -13,6 +13,7 @@ export default defineNuxtConfig({
   },
   modules: [
     "@prisma/nuxt",
+    "@pinia/nuxt",
     "@sidebase/nuxt-auth",
     (_options, nuxt) => {
       nuxt.hooks.hook("vite:extendConfig", (config) => {

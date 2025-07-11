@@ -1,6 +1,10 @@
 <template>
-  <div class="d-flex flex-column align-center justify-center mt-16">
+  <div
+    class="d-flex flex-column align-center justify-center mt-16"
+    min-width="370"
+  >
     <v-img
+      class="d-none d-sm-block"
       :width="150"
       aspect-ratio="16/9"
       cover

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet border rounded>
+  <v-sheet border rounded width="auto" min-width="400">
     <v-container>
       <v-data-table
         :headers="headers"
@@ -23,10 +23,11 @@
               class="me-2"
               prepend-icon="mdi-plus"
               rounded="lg"
-              text="Tambahkan Data Uang Masuk"
               border
               @click="createOnClick()"
-            ></v-btn>
+            >
+              <span class="d-none d-sm-inline">Tambahkan Data Uang Masuk</span>
+            </v-btn>
           </v-toolbar>
         </template>
 
@@ -139,12 +140,6 @@ function editOnclick(itemnya: any) {
   dialog_state.value = true;
   itemmData.value = itemnya;
 }
-
-// async function deleteData(itemnya: CashInItem) {
-//   console.log("item yang akan didelete:" + JSON.stringify(itemnya));
-//   await deleteItem(itemnya.id);
-//   confimartion_state.value = false;
-// }
 
 async function deleteData(idItem: { idData: string }) {
   console.log("item yang akan deleteData:" + idItem.idData);
